@@ -17,10 +17,10 @@ to nixpkgs, like so:
 # flake.nix
 
 {
-  # ...
+  # [...]
 
   inputs = {
-    # ...
+    # [...]
 
     nvibrant = {
       url = "github:mikaeladev/nix-nvibrant";
@@ -38,15 +38,18 @@ to nixpkgs, like so:
       };
     in
     {
-      # for NixOS, use `pkgs` instead of `nixpkgs` to get the overlay
-      nixosConfigurations = pkgs.lib.nixosSystem {
-        # ...
+      # for NixOS, set the `pkgs` attribute here
+      nixosConfigurations = nixpkgs.lib.nixosSystem {
+        inherit pkgs;
+        # if using home-manager with NixOS, also make sure to override `pkgs`
+        # in `home-manager.extraSpecialArgs`
+        # [...]
       };
 
-      # for standalone home-manager, override the `pkgs` attribute
+      # for standalone home-manager, set the `pkgs` attribute here
       homeConfigurations.yourname = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-        # ...
+        # [...]
       };
     }
 }
