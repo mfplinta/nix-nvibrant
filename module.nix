@@ -75,7 +75,13 @@ in
       systemd.user.services.nvibrant = service;
     } else {
       environment.systemPackages = [ cfg.package ];
-      systemd.services.nvibrant = service;
+      systemd.services.nvibrant = {
+        enable = cfg.vibrancy != [] || cfg.dithering != [];
+        wantedBy = service.Install.WantedBy;
+        after = service.Unit.After;
+        description = service.Unit.Description;
+        serviceConfig = service.Service;
+      };
     }
   );
 }
